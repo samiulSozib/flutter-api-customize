@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import '../../model/category.dart';
 
 class HomeServices {
-  Future<List<Category>> fetchCategory({required BuildContext context}) async {
+  static Future<List<Category>> fetchCategory() async {
     const String url = 'https://api.escuelajs.co/api/v1/products';
     List<Category> categoryList = [];
     try {

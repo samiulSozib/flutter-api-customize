@@ -6,26 +6,24 @@ import 'package:http/http.dart' as http;
 import '../../model/post.dart';
 
 class PostServices {
-  Future<List<Post>> fetchPost(
-      {required BuildContext context, required String category}) async {
+  static Future<List<Post>> fetchPost({required String category}) async {
     const String url = 'https://api.escuelajs.co/api/v1/products';
     List<Post> posts = [];
 
     try {
       http.Response res = await http.get(Uri.parse(url));
       for (int i = 0; i < jsonDecode(res.body).length; i++) {
-        var cat = jsonDecode(res.body)[i]['category'];
-        if (jsonDecode(cat)['name'] == category) {
+        var cat = Category.fromJson(jsonDecode(res.body)[i]['category']);
+        if (cat.name == category) {
           posts.add(
-            Post.fromJson(jsonEncode(res.body)[i] as Map<String, dynamic>),
+            Post.fromJson(jsonDecode(res.body)[i]),
           );
         }
       }
     } catch (e) {
-      print(e.toString());
       Fluttertoast.showToast(msg: e.toString());
     }
-    print(posts);
+
     return posts;
   }
 }
